@@ -1,0 +1,24 @@
+@import 'styles/variables.scss';
+
+.global-editor {
+    width: 100%;
+    height: 100%;
+    background-color: $global-editor--bg-color;
+
+    &__header {
+
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding-left: 1em;
+        padding-right: 1em;
+        user-select: none;
+        white-space: nowrap;
+        width: 100%;
+        height: $global-editor__header--height;
+        background-color: $global-editor__header--bg-color;
+        color: $global-editor__header--color;
+    }
+
+
+}

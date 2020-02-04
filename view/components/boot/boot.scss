@@ -1,0 +1,17 @@
+@import 'styles/variables.scss';
+@import 'styles/layout.scss';
+
+.boot {
+    @include flex(column, flex-start, center);
+    width: 100%;
+    height: 100%;
+    background: $boot--bg-color;
+
+    &__status {
+        font-size: 1em;
+        margin: 0.25em;
+        color: white;
+        width: 300px;
+    }
+
+}

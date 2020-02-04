@@ -1,0 +1,16 @@
+.node-connector {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    opacity: .5;
+
+    &__line {
+        stroke: white;
+        pointer-events: all;
+        cursor: pointer;
+        &:hover {
+            stroke: lime;
+        }
+    }
+}

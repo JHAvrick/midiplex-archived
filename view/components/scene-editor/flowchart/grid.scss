@@ -1,0 +1,24 @@
+@import 'styles/variables.scss';
+@import 'styles/layout.scss';
+
+.grid {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 2000px;
+    height: 2000px;
+    background-size: calc(#{$flowchart__grid--size} + 0.5px) calc(#{$flowchart__grid--size} + 0.5px);
+    background-image: 
+        repeating-linear-gradient(
+            0deg, 
+            transparent, 
+            transparent $flowchart__grid--size,
+            $flowchart__grid--grid-color $flowchart__grid--size,
+            $flowchart__grid--grid-color calc(#{$flowchart__grid--size} + 0.5px)),
+
+        repeating-linear-gradient(
+            -90deg,transparent,
+            transparent $flowchart__grid--size,
+            $flowchart__grid--grid-color $flowchart__grid--size,
+            $flowchart__grid--grid-color calc(#{$flowchart__grid--size} + 0.5px));
+}

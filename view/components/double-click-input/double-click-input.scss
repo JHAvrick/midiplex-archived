@@ -1,0 +1,17 @@
+.double-click-input {
+    height: 100%;
+    width: 70%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #D6D6D6;
+    font-size: 13px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: pointer;
+
+    &:focus {
+        outline: none;
+    }
+}

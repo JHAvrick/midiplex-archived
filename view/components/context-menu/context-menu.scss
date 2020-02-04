@@ -1,0 +1,69 @@
+.context-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 150px;
+    //display: none;
+    z-index: 10000;
+    list-style-type: none;
+    margin: none;
+    padding: 10px;
+    border-radius: 2px;
+    background: black;
+    opacity: .8;
+
+    &__option--grouped {
+        cursor: pointer;
+        color: white;
+        font-size: 12px;
+        padding: 3px 0px 3px 10px;
+        position: relative;
+
+
+        .context-menu__sub-menu {
+            display: none;
+        }
+
+        &:hover  {
+            color: lime;
+            .context-menu__sub-menu {
+                display: block;
+            }
+        }
+    }
+
+    &__option {
+        cursor: pointer;
+        color: white;
+        font-size: 12px;
+        padding: 3px 0 3px 0;
+        position: relative;
+
+        .context-menu__sub-menu {
+            display: none;
+        }
+
+        &:hover  {
+            color: lime;
+            .context-menu__sub-menu {
+                display: block;
+            }
+        }
+
+    }
+
+    &__sub-menu {
+        position: absolute;
+        display: none;
+        top: 0;
+        left: 100%;
+        min-width: 150px;
+        z-index: 10000;
+        list-style-type: none;
+        margin: none;
+        padding: 10px;
+        border-radius: 3px;
+        background: black;
+    }
+
+}

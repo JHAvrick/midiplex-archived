@@ -1,0 +1,10 @@
+@import 'styles/variables.scss';
+@import 'styles/layout.scss';
+
+.flowchart {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: $flowchart__grid--bg-color;
+    overflow: hidden;
+}

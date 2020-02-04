@@ -1,0 +1,48 @@
+FIX:
+    > Refactor BaseNode Class and it's descendants:
+        - Simplify arguments (just MidiPlex and an options object)
+        - Add meta object which contains ANY data that the UI might need to know or assign so that it doesn't have to directly access or modify the node
+        - Remove EventBridge for the time being until this feature is better understood
+        - Consider spreading any required systems from MidiPlex to the scene object and passing that down to 
+            node sub-systems (events-bridge, etc.) instead of passing down midiplex
+        - The defined node sandbox
+
+    > Refactor the way nodes are created:
+        - The scene should handle creation of nodes rather than the parsing function since we have to do this dynamically anyways
+
+    > Refactor the definitions to use the globally exposed variables rather than parameters
+
+
+FEATURES:
+    MidiPlex Renderer 
+        Events:
+            interpolateProperty
+
+        Features:
+            clock - precount
+
+        Data Structures
+
+            MessageGroup
+                > defines a set of messages which should all be sent at (virtually) the same time
+                > the actual order depends on the type of message, and will probably be something like this:
+                    1. controlchange
+                    2. noteon
+                    3. noteoff
+                    4. ...?
+
+            MessageRoll
+                > essentially an array of MessageGroups
+                > 
+
+            Sequence
+                > _index = the current spot in the MessageRoll
+                > _roll = MessageRoll
+                > next() = increment the index, return the current MessageGroup
+
+
+        
+
+
+
+

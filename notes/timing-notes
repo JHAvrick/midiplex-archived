@@ -1,0 +1,21 @@
+4 ---> Beats Per Measure
+-
+4 ----> Type of Beat
+
+------------- 4 / 4 -------------
+|                               | Whole
+|       |       |       |       | Quarter
+|   |   |   |   |   |   |   |   | 8th
+| | | | | | | | | | | | | | | | | 16th
+||||||||||||||||||||||||||||||||| 32nd
+
+--------- 3 / 4 ---------
+|                       | Whole
+|       |       |       | Quarter
+|   |   |   |   |   |   | 8th
+| | | | | | | | | | | | | 16th
+||||||||||||||||||||||||| 32nd
+
+tickInterval = ((nanoseconds / bpm) * typeOfBeat) / resolution
+
+

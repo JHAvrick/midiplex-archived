@@ -1,0 +1,65 @@
+import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom";
+
+import "./styles.css";
+
+function App() {
+  return (
+    <div className="App">
+      <ResizeablePanel maxWidth="400" />
+    </div>
+  );
+}
+
+function ResizeablePanel(props) {
+
+  const [lastWidth, setLastWidth] = useState(100);
+  const [width, setWidth] = useState(100);
+  const [height, setHeight] = useState(500);
+  const [dragActive, setDragActive] = useState(false);
+
+  const [dragStartX, setDragStartX] = useState(0);
+  const [dragDistance, setDragDistance] = useState(0);
+
+  const handleDragActive = e => {
+    if (dragActive) {
+      let newWidth = lastWidth + (e.screenX - dragStartX);
+      setWidth(newWidth > props.maxWidth ? props.maxWidth - 1 : newWidth);
+    }
+  };
+
+  const handleDragEnd = e => {
+    setDragActive(false);
+    setLastWidth(width);
+    console.log(width);
+  };
+
+  useEffect(() => {
+    window.addEventListener("mousemove", handleDragActive);
+    window.addEventListener("mouseup", handleDragEnd);
+    return () => {
+      window.removeEventListener("mousemove", handleDragActive);
+      window.removeEventListener("mouseup", handleDragEnd);
+    };
+  });
+
+  const handleMouseDown = event => {
+    setDragStartX(event.screenX);
+    setDragActive(true);
+  };
+
+  return (
+    <div
+      className="resizeable"
+      style={{
+        width: width,
+        height: height
+      }}
+    >
+      <div className="resizeable__edge-right" onMouseDown={handleMouseDown} />
+    </div>
+  );
+}
+
+const rootElement = document.getElementById("root");
+ReactDOM.render(<App />, rootElement);

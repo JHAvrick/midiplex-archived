@@ -1,0 +1,77 @@
+@import 'styles/variables.scss';
+@import 'styles/layout.scss';
+
+.main-menu {
+    @include flex(column, center, center);
+    width: 100%;
+    height: 100%;
+    background: $boot--bg-color;
+
+    &__content {
+        @include flex(row, space-between, flex-start);
+    }
+
+    &__options {
+        min-width: 350px;
+        height: 40%;
+    }
+
+    &__option {
+        @include flex(row, space-between, center);
+        width: 100%;
+        height: 75px;
+        border-top: 3px solid #8000FF;
+        background: #484848;
+        margin-bottom: 15px;
+        padding: 0 1em 0 1em;
+        color: white;
+        cursor: pointer;
+
+        &:hover {
+            background: lighten(#484848, 10%);
+            transform: scale(1.01);
+        }
+
+    }
+
+    &__option-label {
+        @include flex(column, flex-end, center);
+        text-align: right;
+        width: 50%;
+    }
+
+    &__option-title {
+        width: 100%;
+        color: #CFCFCF;
+        font-size: 18pt;
+    }
+
+    &__option-description {
+        width: 100%;
+        color: #A0A0A0;
+        font-size: 9pt;
+    }
+
+    &__file-chooser {
+        display: none;
+    }
+
+    &__recent {
+        @include flex(column, flex-start, center);
+        width: 450px;
+        height: calc(100% - 15px);
+        background: #484848;
+        margin-left: 2em;
+    }
+
+    &__recent-header {
+        @include flex(row, flex-start, center);
+        width: 100%;
+        height: 25px;
+        background: #222222;
+        color: #A9A9A9;
+        padding: 0 1em 0 1em;
+        font-size: 10pt;
+    }
+
+}

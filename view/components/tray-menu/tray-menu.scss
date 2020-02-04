@@ -1,0 +1,40 @@
+
+$tray-width: 400px;
+$tray-height: 50px;
+
+.tray-menu {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: absolute;
+    left: calc(97% - #{$tray-width});
+    top: calc(97% - #{$tray-height});
+    width: $tray-width;
+    height: $tray-height;
+    border-radius: 3px;
+    z-index: 10000;
+
+    &__option {
+        color: white;
+        padding: 0 15px 0 15px;
+        cursor: pointer;
+        z-index: 10000000;
+        transition: 100ms;
+        opacity: .7;
+        &:hover {
+            opacity: .9;
+        }
+    };
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: black;
+        opacity: 0.35;
+    }
+
+}

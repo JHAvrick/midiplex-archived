@@ -1,0 +1,10 @@
+
+------------------------------------------------------------
+Definition Loading Process
+------------------------------------------------------------
+
+1. The ResourceManager is pointed to a directory and loads each file in it using fs
+2. The files are turned into strings and parsed using eval()
+3. The ResourceManager emits a "definitionLoaded" event, which the DefinitionManager listens for
+4. This event includes the evaled definition w/ the raw string version also attached as a reference
+5. The raw definition is evaled again at the node level

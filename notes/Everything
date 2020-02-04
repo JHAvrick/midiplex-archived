@@ -1,0 +1,37 @@
+Boot (cli to project path)
+
+Scene
+    Systems:
+        WebMidi
+        Devices
+        Definitions
+        EventManager
+        Clock
+        Nodes
+
+    Properties
+        name (for display)
+        bpm --> clock
+        resolution --> clock
+
+    Getters / Setters (wrappers for system values)
+        BPM <--> clock.bpm
+        resolution <--> clock.resolution
+        timeSignature <--> clock.timeSignature
+        precision <--> clock.precision
+
+    Methods:
+        createNode ( serialized node )
+        deleteNode (node id)
+        cloneNode ( node id )
+        connectNodes ( from node id, to node id )
+        activate (  )
+        deactivate ( )
+
+Nodes
+
+Create Node ()
+    Config --> Definition --> Base Node
+    resolveNode(config, definition, base)
+ 
+ 

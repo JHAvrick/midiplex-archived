@@ -1,0 +1,25 @@
+@import 'styles/variables.scss';
+
+.node-editor {
+    width: 100%;
+    height: 100%;
+
+    background-color: $node-editor--bg-color;
+    overflow: hidden;
+
+    &__header {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding-left: 1em;
+        padding-right: 1em;
+        user-select: none;
+        white-space: nowrap;
+        width: 100%;
+        height: $node-editor__header--height;
+        background-color: $node-editor__header--bg-color;
+        color: $node-editor__header--color;
+    }
+}
+
+

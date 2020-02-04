@@ -1,0 +1,7 @@
+@import 'styles/variables.scss';
+
+.toolbar {
+    width: 100%;
+    height: $toolbar--height;
+    background-color: $toolbar--bg-color;
+}

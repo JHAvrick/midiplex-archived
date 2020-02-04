@@ -1,0 +1,41 @@
+@import 'styles/variables.scss';
+@import 'styles/layout.scss';
+
+.vertical-container {
+    width: 100%;
+    max-height: 100%;
+    overflow: hidden;
+
+    &__header {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding-left: 1em;
+        padding-right: 1em;
+        user-select: none;
+        white-space: nowrap;
+        height: 25px;
+        font-size: 12px;
+        font-weight: 100;
+        color: white;
+        background-color: #262626;
+        cursor: pointer;
+    }
+
+    &__content {
+        width: 100%;
+        height: calc(100% - 23px);
+        overflow: hidden;
+        transition: 200ms;
+    }
+
+    /*
+    &--bg-info { background-color: $vertical-container__header--bg-info; }
+    &--bg-props { background-color: $vertical-container__header--bg-props; }
+    &--bg-events { background-color: $vertical-container__header--bg-events; }
+    */
+
+    &--bg-info { border-top: 2px solid $vertical-container__header--bg-info; }
+    &--bg-props { border-top: 2px solid $vertical-container__header--bg-props; }
+    &--bg-events { border-top: 2px solid $vertical-container__header--bg-events; }
+}

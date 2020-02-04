@@ -1,0 +1,65 @@
+
+/*-------------- COMPONENT VARIABLES -------------- */
+
+$controlbar--height: 30px;
+
+
+
+/*-------------------- THEME ----------------------- */
+
+//-------- Sidebar ---------
+$sidebar--bg-color: #292929;
+
+//-------- BOOT SCREEN ---------
+$boot--bg-color: #292929;
+$loading--bg-color: #292929;
+
+//-------- TOOLBAR ---------
+$toolbar--height: 30px;
+$toolbar--bg-color: #373737;
+
+//-------- FOOTER ---------
+$footer--height: 30px;
+$footer--bg-color: #373737;
+
+//-------- GLOBAL EDITOR ---------
+$global-editor--bg-color: #737373;
+$global-editor__header--height: 35px;
+$global-editor__header--bg-color: #494949;
+$global-editor__header--color: white;
+
+
+//-------- SCENE EDITOR ---------
+$scene-editor--bg-color: #E9E9E9;
+
+    //Tabs
+    $tabs__bar--height: 37px;
+    $tabs__bar--bg-color: #292929;
+    $tabs__tab-inactive--bg-color: #7B7B7B;
+    $tabs__tab-inactive--border-top: 3px solid #535353;
+    $tabs__tab-inactive--color: #535353;
+    $tabs__tab-active--bg-color: #292929;
+    $tabs__tab-active--border-top: 3px solid #FF01F5;
+    $tabs__tab-active--color: white;
+
+    //Flowchart
+    $flowchart__grid--bg-color: #222222; //#646464;
+    $flowchart__grid--size: 50px;
+    $flowchart__grid--grid-color: lighten($flowchart__grid--bg-color, 5%);
+
+    //Nodes
+    $node__content--bg-color: #3F3F3F;
+    $node__header--bg-color: #4D4A4E;
+
+
+
+//-------- NODE EDITOR ---------
+$node-editor--bg-color: #737373;
+$node-editor__header--height: 35px;
+$node-editor__header--bg-color: #494949;
+$node-editor__header--color: white;
+
+
+$vertical-container__header--bg-info: #FA00FF;
+$vertical-container__header--bg-props: #8000FF;
+$vertical-container__header--bg-events: #0085FF;
