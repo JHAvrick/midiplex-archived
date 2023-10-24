@@ -1,7 +1,11 @@
 import { MidiplexMessage } from "./midiplex-mesasge";
 
+
+type PropKey<D extends MidiplexNodeTypeDescription> = Extract<keyof D['props'], string>;
+
 class MidiplexNodeInstance <D extends MidiplexNodeTypeDescription> {
     
+
     public readonly key: string;
     public readonly definition: MidiplexNodeDefinition<D>;
     private thruMode: 'filter' | 'thru' = 'filter';
@@ -12,13 +16,13 @@ class MidiplexNodeInstance <D extends MidiplexNodeTypeDescription> {
     private receiveHandler: null | ((message: MidiplexMessage, edgeKey: keyof D['inputs']) => void) = null;
     private updateHandler: null | (() => void) = null;
 
-    constructor(key: string, node: MidiplexNodeDefinition<D>, config: NodeConfig = {}){
+    constructor(key: string, node: MidiplexNodeDefinition<D>, config: NodeConfig<D> = {}){
         this.key = key;
         this.definition = node;
 
         for (let key in node.props) {
             let k = key as keyof D['props'];
-            this.props.set(k, config.props?.[key] ?? node.props[k].value);
+            this.props.set(k, config.props?.[k] ?? node.props[k].value);
         }
 
         for (let key in node.state){

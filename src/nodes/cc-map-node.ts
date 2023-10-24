@@ -1,6 +1,5 @@
 import { MidiplexMessage } from "@/midiplex-mesasge";
 import { MidiplexNodeInstance } from "@/node-instance";
-import { convertRange } from "@/util";
 
 type CCMapNodeTypeDef = {
     inputs: {
@@ -16,7 +15,7 @@ type CCMapNodeTypeDef = {
 }
 
 interface CCMap {
-    [key: number]: IntRange<0, 128>[]
+    [key: number]: number[]
 }
 
 const CCMapNodeDef : MidiplexNodeDefinition<CCMapNodeTypeDef> = {
@@ -63,8 +62,8 @@ const CCMapNodeDef : MidiplexNodeDefinition<CCMapNodeTypeDef> = {
 };
 
 class CCMapNode extends MidiplexNodeInstance<CCMapNodeTypeDef> {
-    constructor(key: string, config: NodeConfig = {}){
-        super(key, CCMapNodeDef);
+    constructor(key: string, config: NodeConfig<CCMapNodeTypeDef> = {}){
+        super(key, CCMapNodeDef, config);
     }
 }
 

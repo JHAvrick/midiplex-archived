@@ -1,3 +1,4 @@
+import { MidiplexMessage } from "@/midiplex-mesasge";
 import { MidiplexNodeInstance } from "@/node-instance";
 import { AllMessageTypes } from "@/util";
 
@@ -8,7 +9,10 @@ type DebugNodeTypeDef = {
     outputs: {
         out: MidiMessageType
     },
-    props: {},
+    props: {
+        logToConsole: boolean,
+        callback: (message: MidiplexMessage) => void
+    },
     state: {}
 }
 
@@ -28,10 +32,22 @@ const DebugNodeDef : MidiplexNodeDefinition<DebugNodeTypeDef> = {
             messageTypes: AllMessageTypes
         }
     },
+    props: {
+        logToConsole: {
+            name: 'Log to console',
+            value: false
+        },
+        callback: {
+            name: 'Callback',
+            value: () => {}
+        }
+    },
     node({ send, receive, prop }){
         receive((message, edge) => {
-            console.log(message);
-            //TODO: Implement transpose
+            if (prop('logToConsole')) {
+                console.log(message);
+            }
+            prop('callback')(message);
             send(message, 'out');
         });
     }
@@ -39,8 +55,8 @@ const DebugNodeDef : MidiplexNodeDefinition<DebugNodeTypeDef> = {
 
 
 class DebugNode extends MidiplexNodeInstance<DebugNodeTypeDef> {
-    constructor(key: string, config: NodeConfig = {}){
-        super(key, DebugNodeDef);
+    constructor(key: string, config: NodeConfig<DebugNodeTypeDef> = {}){
+        super(key, DebugNodeDef, config);
     }
 }
 

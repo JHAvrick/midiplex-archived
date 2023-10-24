@@ -1,6 +1,3 @@
-//This node lets you define which CC controls are allowed to pass through.
-
-import { MidiplexMessage } from "@/midiplex-mesasge";
 import { MidiplexNodeInstance } from "@/node-instance";
 
 type CCPassNodeTypeDef = {
@@ -49,8 +46,8 @@ const CCPassNodeDef : MidiplexNodeDefinition<CCPassNodeTypeDef> = {
 };
 
 class CCPassNode extends MidiplexNodeInstance<CCPassNodeTypeDef> {
-    constructor(key: string, config: NodeConfig = {}){
-        super(key, CCPassNodeDef);
+    constructor(key: string, config: NodeConfig<CCPassNodeTypeDef> = {}){
+        super(key, CCPassNodeDef, config);
     }
 }
 

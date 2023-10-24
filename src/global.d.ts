@@ -43,19 +43,21 @@ declare global {
      * a node to a node instance.
      * --------------------------------------------------------------------------------------
      */
-    interface NodeConfig {
+    interface NodeConfig<D extends MidiplexNodeTypeDescription> {
         /**
          * Pass in a set of property values to init the node with.
          */
-        props?: { [key: string]: any },
+        props?: { 
+            [key in keyof D['props']]: typeof D['props'] 
+        },
         /**
          * A node can be preconfigured to send messages to other nodes. The node key and edge key
          * can be specified as an array of two string [node, edge] or as an object. The node/edge
          * must already exist within the system or an error will be thrown.
          */
-        to?: {
-            [key: string]: [string, string] | { node: string, edge: string }
-        }
+        // to?: {
+        //     [key: string]: [string, string] | { node: string, edge: string }
+        // }
     }
 
     interface EdgeNodeReference {
@@ -189,6 +191,17 @@ declare global {
         'PROGRAM_CHANGE_NODE' = 'PROGRAM_CHANGE_NODE',
         'CC_PASS_NODE' = 'CC_PASS_NODE'
     }
+
+    /**
+     * --------------------------------------------------------------------------------------
+     * Prop types
+     * --------------------------------------------------------------------------------------
+     */
+
+    interface CCRangeMap {
+        [key: number]: [IntRange<0, 128>, IntRange<0, 128>]
+    }
+
 }
 
 export {} 

@@ -13,6 +13,42 @@ const AllMessageTypes = <const> [
     'system'
 ]
 
+const Generate = {
+    noteon: (note: number | NoteWithOctave, velocity: number) => {
+        if (typeof note === 'string') {
+            note = noteToMidi(note);
+        }
+        return new MidiplexMessage(new Uint8Array([0x90, note, velocity]));
+    },
+    noteoff: (note: number | NoteWithOctave, velocity: number) => {
+        if (typeof note === 'string') {
+            note = noteToMidi(note);
+        }
+        return new MidiplexMessage(new Uint8Array([0x80, note, velocity]));
+    },
+    controlchange: (cc: number, value: number) => {
+        return new MidiplexMessage(new Uint8Array([0xB0, cc, value]));
+    },
+    programchange: (program: number) => {
+        return new MidiplexMessage(new Uint8Array([0xC0, program]));
+    },
+    polykeypressure: (note: number, pressure: number) => {
+        return new MidiplexMessage(new Uint8Array([0xA0, note, pressure]));
+    },
+    monokeypressure: (pressure: number) => {
+        return new MidiplexMessage(new Uint8Array([0xD0, pressure]));
+    },
+    pitchbend: (value: number) => {
+        return new MidiplexMessage(new Uint8Array([0xE0, value]));
+    },
+    channelaftertouch: (pressure: number) => {
+        return new MidiplexMessage(new Uint8Array([0xD0, pressure]));
+    },
+    system: (data: Uint8Array) => {
+        return new MidiplexMessage(data);
+    }
+}
+
 const pickMessageTypes = (messageTypesToPick: MidiMessageType[]) : MidiMessageType[] => {
     return AllMessageTypes.filter((type) => messageTypesToPick.includes(type));
 }
@@ -69,6 +105,7 @@ const matchTrigger = (trigger: MidiplexTrigger, m: MidiplexMessage) => {
 
 export {
     AllMessageTypes,
+    Generate,
     pickMessageTypes,
     omitMessageTypes,
     convertRange,
