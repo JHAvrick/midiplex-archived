@@ -38,7 +38,7 @@ const CCPassNodeDef : MidiplexNodeDefinition<CCPassNodeTypeDef> = {
     node({ prop, send, receive }){
         receive((message) => {
             let pass = prop('pass');
-            if (pass.includes(message.message.data[1])){
+            if (pass.includes(message.data[1])){
                 send(message, 'out');
             }
         })

@@ -41,10 +41,8 @@ const OutputNodeDefinition : MidiplexNodeDefinition<OutputNodeTypeDef> = {
         }
 
         receive((message, edge) => {
-            //TODO: Check implementation
             if (output){
-                console.log(message.message.data);
-                output.send(message.message.data);
+                output.send(message.data);
             }
         });
         

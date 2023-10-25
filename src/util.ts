@@ -1,53 +1,45 @@
-import { Message } from "webmidi";
-import { MidiplexMessage } from "./midiplex-mesasge";
+import { MidiplexMessage } from "./midiplex-message";
 
 const AllMessageTypes = <const> [
-    'noteon',
-    'noteoff',
-    'polykeypressure',
-    'controlchange',
-    'programchange',
-    'monokeypressure',
-    'pitchbend',
-    'channelaftertouch',
-    'system'
+      // MIDI channel message events
+      "noteoff",
+      "noteon",
+      "controlchange",
+      "keyaftertouch",
+      "programchange",
+      "channelaftertouch",
+      "pitchbend",
+
+      // MIDI channel mode events
+      "allnotesoff",
+      "allsoundoff",
+      "localcontrol",
+      "monomode",
+      "omnimode",
+      "resetallcontrollers",
+
+      // RPN/NRPN events
+      "nrpn",
+      "nrpn-dataentrycoarse",
+      "nrpn-dataentryfine",
+      "nrpn-dataincrement",
+      "nrpn-datadecrement",
+      "rpn",
+      "rpn-dataentrycoarse",
+      "rpn-dataentryfine",
+      "rpn-dataincrement",
+      "rpn-datadecrement"
 ]
 
-const Generate = {
-    noteon: (note: number | NoteWithOctave, velocity: number) => {
-        if (typeof note === 'string') {
-            note = noteToMidi(note);
-        }
-        return new MidiplexMessage(new Uint8Array([0x90, note, velocity]));
-    },
-    noteoff: (note: number | NoteWithOctave, velocity: number) => {
-        if (typeof note === 'string') {
-            note = noteToMidi(note);
-        }
-        return new MidiplexMessage(new Uint8Array([0x80, note, velocity]));
-    },
-    controlchange: (cc: number, value: number) => {
-        return new MidiplexMessage(new Uint8Array([0xB0, cc, value]));
-    },
-    programchange: (program: number) => {
-        return new MidiplexMessage(new Uint8Array([0xC0, program]));
-    },
-    polykeypressure: (note: number, pressure: number) => {
-        return new MidiplexMessage(new Uint8Array([0xA0, note, pressure]));
-    },
-    monokeypressure: (pressure: number) => {
-        return new MidiplexMessage(new Uint8Array([0xD0, pressure]));
-    },
-    pitchbend: (value: number) => {
-        return new MidiplexMessage(new Uint8Array([0xE0, value]));
-    },
-    channelaftertouch: (pressure: number) => {
-        return new MidiplexMessage(new Uint8Array([0xD0, pressure]));
-    },
-    system: (data: Uint8Array) => {
-        return new MidiplexMessage(data);
-    }
-}
+const ChannelMessageTypes = <const> [
+    "noteoff",
+    "noteon",
+    "controlchange",
+    "keyaftertouch",
+    "programchange",
+    "channelaftertouch",
+    "pitchbend"
+];
 
 const pickMessageTypes = (messageTypesToPick: MidiMessageType[]) : MidiMessageType[] => {
     return AllMessageTypes.filter((type) => messageTypesToPick.includes(type));
@@ -55,10 +47,6 @@ const pickMessageTypes = (messageTypesToPick: MidiMessageType[]) : MidiMessageTy
 
 const omitMessageTypes = <T extends MidiMessageType>(messageTypesToOmit: MidiMessageType[]): MidiMessageType[] => {
     return AllMessageTypes.filter((type: MidiMessageType) => !messageTypesToOmit.includes(type));
-    // if (result.length === 0) {
-    //     throw new Error("Resulting array is empty");
-    // }
-    // return result;
 }
 
 const convertRange = (oldVal: number, oldMin: number, oldMax: number, newMin: number, newMax: number) => {
@@ -88,14 +76,14 @@ const matchTrigger = (trigger: MidiplexTrigger, m: MidiplexMessage) => {
     if ('test' in trigger) return trigger.test(m);
     switch (true) {
         case trigger.type === 'noteon' && m.type === 'noteon':
-            return 'note' in trigger ? trigger.note === m.message.data[1] : true;
+            return 'note' in trigger ? trigger.note === m.data[1] : true;
         case trigger.type === 'noteoff' && m.type === 'noteoff':
-            return 'note' in trigger ? trigger.note === m.message.data[1] : true;
+            return 'note' in trigger ? trigger.note === m.data[1] : true;
         case trigger.type === 'controlchange' && m.type === 'controlchange':
             if ('cc' in trigger && 'value' in trigger) {
-                return trigger.cc === m.message.data[1] && trigger.value === m.message.data[2];
+                return trigger.cc === m.data[1] && trigger.value === m.data[2];
             } else if ('cc' in trigger) {
-                return trigger.cc === m.message.data[1];
+                return trigger.cc === m.data[1];
             } else {
                 return true;
             }
@@ -103,13 +91,116 @@ const matchTrigger = (trigger: MidiplexTrigger, m: MidiplexMessage) => {
     }   
 }
 
+const isChannelMessage = (data: Uint8Array) => {
+    return (data[0] & 0xF0) >= 0x80 && (data[0] & 0xF0) <= 0xEF
+}
+
+const setChannel = (data: Uint8Array, channel: number) => {
+    if (isChannelMessage(data)){
+        channel = clamp(channel, 1, 16);
+        let statusByte = data[0] & 0xF0;
+        data[0] = statusByte + channel - 1;
+    }
+    return data;
+}
+
+const Util = Object.freeze(<const> {
+    Math: {
+        convertRange,
+        clamp
+    },
+    Data: {
+        isChannelMessage,
+        setChannel
+    },
+    Message: {
+        /**
+         * Create a new `MidiplexMessage`, optionally specifying a channel number. If the data given is not a channel
+         * message this value will be ignored.
+         * 
+         * @param data - A Uint8Array containing the message data
+         * @param channel - An optional channel number between 1 and 16
+         * @returns 
+         */
+        create: (data: Uint8Array, channel?: number) => {
+            if (channel){
+                setChannel(data, channel);
+            }
+            return new MidiplexMessage(data);
+        },
+        matchTrigger
+    },
+    Note: {
+        noteToMidi
+    },
+    Generate: {
+        /**
+         * Generates a `noteon` midiplex message.
+         * 
+         * @param note - A note midi number or note string (e.g. 'C4')
+         * @param velocity - A velocity value between 0 and 127
+         * @param channel - An optional channel number between 1 and 16
+         * @returns 
+         */
+        noteon: (note: number | NoteWithOctave, velocity: number, channel?: number) => {
+            if (typeof note === 'string') {
+                note = noteToMidi(note);
+            }
+
+            return Util.Message.create(new Uint8Array([0x90, note, velocity]), channel);
+        },
+        /**
+         * Generates a `noteoff` midiplex message.
+         * 
+         * @param note - A note midi number or note string (e.g. 'C4')
+         * @param velocity - A velocity value between 0 and 127
+         * @param channel - An optional channel number between 1 and 16
+         * @returns 
+         */
+        noteoff: (note: number | NoteWithOctave, velocity: number, channel?: number) => {
+            if (typeof note === 'string') {
+                note = noteToMidi(note);
+            }
+            return Util.Message.create(new Uint8Array([0x80, note, velocity]), channel);
+        },
+        /**
+         * 
+         * @param cc - The controller number
+         * @param value - The controller value
+         * @param channel - An optional channel number between 1 and 16
+         * @returns 
+         */
+        controlchange: (cc: number, value: number, channel?: number) => {
+            return Util.Message.create(new Uint8Array([0xB0, cc, value]), channel);
+        },
+        keyaftertouch: (note: number | NoteWithOctave, pressure: number, channel?: number) => {
+            if (typeof note === 'string') {
+                note = noteToMidi(note);
+            }
+            return Util.Message.create(new Uint8Array([0xA0, note, pressure]), channel);
+        },
+        programchange: (program: number, channel?: number) => {
+            return Util.Message.create(new Uint8Array([0xC0, program]), channel);
+        },
+        pitchbend: (value: number, channel?: number) => {
+            return Util.Message.create(new Uint8Array([0xE0, value]), channel);
+        },
+        channelaftertouch: (pressure: number, channel?: number) => {
+            return Util.Message.create(new Uint8Array([0xD0, pressure]), channel);
+        }
+    }
+
+});
+
 export {
     AllMessageTypes,
-    Generate,
+    ChannelMessageTypes,
+    Util,
     pickMessageTypes,
     omitMessageTypes,
     convertRange,
     getProgramChangeMessage,
     clamp,
-    matchTrigger
+    matchTrigger,
+    isChannelMessage
 }

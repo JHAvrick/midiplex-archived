@@ -1,4 +1,3 @@
-import { MidiplexMessage } from "@/midiplex-mesasge";
 import { AllMessageTypes } from "@/util";
 import { MidiplexNodeInstance } from "@/node-instance";
 
@@ -88,7 +87,7 @@ const TogglePathDef :  MidiplexNodeDefinition<TogglePathTypeDef> = {
         });
 
         receive((message) => {
-            let data = message.message.data;
+            let data = message.data;
             if (message.type === 'controlchange' && data[1] === prop('cc')) {
                 if (prop('toggleOnAnyValue')){
                     isOpen = !isOpen;
@@ -113,8 +112,8 @@ const TogglePathDef :  MidiplexNodeDefinition<TogglePathTypeDef> = {
 
 
 class TogglePathNode extends MidiplexNodeInstance<TogglePathTypeDef> {
-    constructor(key: string, config: NodeConfig = {}){
-        super(key, TogglePathDef);
+    constructor(key: string, config: NodeConfig<TogglePathTypeDef> = {}){
+        super(key, TogglePathDef, config);
     }
 }
 

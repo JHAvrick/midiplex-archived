@@ -1,5 +1,5 @@
 import { MidiplexNodeInstance } from "@/node-instance";
-import { MidiplexMessage } from "@/midiplex-mesasge";
+import { MidiplexMessage } from "@/midiplex-message";
 import { WebMidi, MessageEvent } from "webmidi";
 import { AllMessageTypes } from "@/util";
  

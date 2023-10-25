@@ -1,4 +1,4 @@
-import { MidiplexMessage } from './midiplex-mesasge';
+import { MidiplexMessage } from './midiplex-message';
 import { MidiplexNodeInstance } from './node-instance';
 
 declare global {
@@ -15,7 +15,38 @@ declare global {
      * Node definition - these types describe the structure of a node.
      * --------------------------------------------------------------------------------------
      */
-    type MidiMessageType = 'noteoff' | 'noteon' | 'polykeypressure' | 'controlchange' | 'programchange' | 'monokeypressure' | 'pitchbend' | 'channelaftertouch' | 'system';
+    type MidiMessageType = "noteoff" |
+        "controlchange" |
+        "noteon" |
+        "keyaftertouch" |
+        "programchange" |
+        "channelaftertouch" |
+        "pitchbend" |
+
+        // MIDI channel mode events
+        "allnotesoff" |
+        "allsoundoff" |
+        "localcontrol" |
+        "monomode" |
+        "omnimode" |
+        "resetallcontrollers" |
+
+        // RPN/NRPN events
+        "nrpn" |
+        "nrpn-dataentrycoarse" |
+        "nrpn-dataentryfine" |
+        "nrpn-dataincrement" |
+        "nrpn-datadecrement" |
+        "rpn" |
+        "rpn-dataentrycoarse" |
+        "rpn-dataentryfine" |
+        "rpn-dataincrement" |
+        "rpn-datadecrement";
+
+    type MidiChannelMessageType = 'noteon' | 'noteoff' | 'controlchange' | 'keyaftertouch' | 'programchange' | 'channelaftertouch' | 'pitchbend';
+
+    //type MidiMessageType = 'noteoff' | 'noteon' | 'keyaftertouch' | 'polykeypressure' | 'controlchange' | 'programchange' | 'pitchbend' | 'channelaftertouch' | 'system';
+    //type MidiChannelMessageType = 'noteoff' | 'noteon' | 'keyaftertouch' | 'controlchange' | 'programchange' | 'channelaftertouch' | 'pitchbend';
     type Note = 'C' | 'C#' | 'D' | 'D#' | 'E' | 'F' | 'F#' | 'G' | 'G#' | 'A' | 'A#' | 'B';
     type NoteWithOctave = `${Note}${number}`;
 
@@ -126,7 +157,6 @@ declare global {
             }
         },
         node?: (params: ({
-            key: string,
             prop: <K extends keyof T['props']>(key: K) => T['props'][K],
             state: <K extends keyof T['state']>(key: K, newVal?: T['state'][K]) => T['state'][K],
             send: <K extends keyof T['outputs']>(message: MidiplexMessage, edge: K) => void,
@@ -176,7 +206,23 @@ declare global {
      * Node types
      * --------------------------------------------------------------------------------------
      */
-    type MidiplexNodeType = 'INPUT_NODE' | 'OUTPUT_NODE' | 'DEBUG_NODE' | 'MESSAGE_TYPE_FILTER_NODE' | 'MESSAGE_TYPE_SPLIT_NODE' | 'TRANSPOSE_NODE' | 'CC_RANGE_NODE' | 'CC_MAP_NODE' | 'TOGGLE_PATH_NODE' | 'CUSTOM_FILTER_NODE' | 'PROGRAM_CHANGE_NODE' | 'CC_PASS_NODE';
+    type MidiplexNodeType = 
+        'INPUT_NODE' | 
+        'OUTPUT_NODE' | 
+        'DEBUG_NODE' | 
+        'MESSAGE_TYPE_FILTER_NODE' | 
+        'MESSAGE_TYPE_SPLIT_NODE' | 
+        'TRANSPOSE_NODE' | 
+        'CC_RANGE_NODE' | 
+        'CC_MAP_NODE' | 
+        'TOGGLE_PATH_NODE' | 
+        'CUSTOM_FILTER_NODE' | 
+        'PROGRAM_CHANGE_NODE' | 
+        'CC_PASS_NODE' | 
+        'NOTE_MAP_NODE' | 
+        'SET_CHANNEL_NODE' |
+        'SPLIT_CHANNEL_NODE';
+    
     enum MPNode {
         'OUTPUT_NODE' = 'OUTPUT_NODE',
         'INPUT_NODE' = 'INPUT_NODE',
@@ -189,7 +235,9 @@ declare global {
         'TOGGLE_PATH_NODE' = 'TOGGLE_PATH_NODE',
         'CUSTOM_FILTER_NODE' = 'CUSTOM_FILTER_NODE',
         'PROGRAM_CHANGE_NODE' = 'PROGRAM_CHANGE_NODE',
-        'CC_PASS_NODE' = 'CC_PASS_NODE'
+        'CC_PASS_NODE' = 'CC_PASS_NODE',
+        'NOTE_MAP_NODE' = 'NOTE_MAP_NODE',
+        'SET_CHANNEL_NODE' = 'SET_CHANNEL_NODE'
     }
 
     /**
@@ -200,6 +248,10 @@ declare global {
 
     interface CCRangeMap {
         [key: number]: [IntRange<0, 128>, IntRange<0, 128>]
+    }
+
+    interface NoteMap {
+        [key: number]: number[]
     }
 
 }

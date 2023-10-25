@@ -1,4 +1,4 @@
-import { MidiplexMessage } from "@/midiplex-mesasge";
+import { MidiplexMessage } from "@/midiplex-message";
 import { MidiplexNodeInstance } from "@/node-instance";
 import { clamp } from "@/util";
 
@@ -44,12 +44,12 @@ const CCClampNodeDef : MidiplexNodeDefinition<CCClampNodeTypeDef> = {
              * If no mapping is provided, CC messages are passed through unmodified.
              */
             let map = prop('mapping');
-            let cc = message.message.data[1];
+            let cc = message.data[1];
             if (map[cc]) {
                 let data = new Uint8Array([
-                    message.message.data[0], 
-                    message.message.data[1], 
-                    clamp(message.message.data[2], map[cc][0], map[cc][1])
+                    message.data[0],
+                    message.data[1],
+                    clamp(message.data[2], map[cc][0], map[cc][1])
                 ]);
                 
                 send(new MidiplexMessage(data), 'out');

@@ -1,8 +1,8 @@
 import { expect, test } from '@jest/globals';
 import { CCMapNode } from './cc-map-node';
 import { DebugNode } from './debug-node';
-import { MidiplexMessage } from '../midiplex-mesasge';
-import { Generate } from '../util';
+import { MidiplexMessage } from '../midiplex-message';
+import { Util } from '../util';
 
 let debug = new DebugNode('debug');
 let node = new CCMapNode('cc-map-node', { 
@@ -19,13 +19,13 @@ describe('CCMapNode', () => {
         let messageCount = 0;
         debug.setProp('callback', (m: MidiplexMessage) => {
             messageCount++;
-            expect([44, 45].includes(m.message.data[1]) && m.message.data[2] === 127).toBe(true);
+            expect([44, 45].includes(m.data[1]) && m.data[2] === 127).toBe(true);
             if (messageCount === 2){
                 done();
             }
         });
     
-        let cc = Generate.controlchange(74, 127);
+        let cc = Util.Generate.controlchange(74, 127);
         node.receive(cc, 'in');
     });
 
@@ -33,14 +33,14 @@ describe('CCMapNode', () => {
         let messageCount = 0;
         debug.setProp('callback', (m: MidiplexMessage) => {
             messageCount++;
-            expect([80, 86].includes(m.message.data[1]) && m.message.data[2] === 127).toBe(true);
+            expect([80, 86].includes(m.data[1]) && m.data[2] === 127).toBe(true);
             if (messageCount === 2){
                 done();
             }
         });
     
-        let cc = Generate.controlchange(80, 127);
-        let cc2 = Generate.controlchange(86, 127);
+        let cc = Util.Generate.controlchange(80, 127);
+        let cc2 = Util.Generate.controlchange(86, 127);
         node.receive(cc, 'in');
         node.receive(cc2, 'in');
     });

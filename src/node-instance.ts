@@ -1,4 +1,4 @@
-import { MidiplexMessage } from "./midiplex-mesasge";
+import { MidiplexMessage } from "./midiplex-message";
 
 
 type PropKey<D extends MidiplexNodeTypeDescription> = Extract<keyof D['props'], string>;
@@ -53,7 +53,6 @@ class MidiplexNodeInstance <D extends MidiplexNodeTypeDescription> {
         this.getState = this.getState.bind(this);
         this.getOrSetStateInternal = this.getOrSetStateInternal.bind(this);
         this.definition.node?.({
-            key: this.key,
             prop: this.getProp.bind(this),
             state: this.getOrSetStateInternal.bind(this),
             send: this.send.bind(this),

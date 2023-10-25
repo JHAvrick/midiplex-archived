@@ -1,4 +1,4 @@
-import { MidiplexMessage } from "@/midiplex-mesasge";
+import { MidiplexMessage } from "@/midiplex-message";
 import { MidiplexNodeInstance } from "@/node-instance";
 import { AllMessageTypes } from "@/util";
 
@@ -48,8 +48,8 @@ const CustomFilterNodeDef :  MidiplexNodeDefinition<CustomFilterNodeTypeDef> = {
 
 
 class CustomFilterNode extends MidiplexNodeInstance<CustomFilterNodeTypeDef> {
-    constructor(key: string, config: NodeConfig = {}){
-        super(key, CustomFilterNodeDef);
+    constructor(key: string, config: NodeConfig<CustomFilterNodeTypeDef> = {}){
+        super(key, CustomFilterNodeDef, config);
     }
 }
 

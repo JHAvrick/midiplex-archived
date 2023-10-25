@@ -1,6 +1,6 @@
 import { WebMidi, MessageEvent } from 'webmidi';
 import { Midiplex } from './index';
-import { MidiplexMessage } from "./midiplex-mesasge";
+import { MidiplexMessage } from "./midiplex-message";
 import { InputNode } from './nodes/input-node';
 
 class MidiplexDevice {

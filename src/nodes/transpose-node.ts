@@ -1,6 +1,6 @@
-import { MidiplexMessage } from "@/midiplex-mesasge";
+import { MidiplexMessage } from "@/midiplex-message";
 import { MidiplexNodeInstance } from "@/node-instance";
-import { clamp, omitMessageTypes } from "@/util";
+import { clamp } from "@/util";
 
 type TransposeNodeTypeDef = {
     inputs: {
@@ -8,7 +8,6 @@ type TransposeNodeTypeDef = {
     },
     outputs: {
         out: 'noteon' | 'noteoff',
-        //thru: 'polykeypressure' | 'controlchange' | 'programchange' | 'monokeypressure' | 'pitchbend' | 'channelaftertouch' | 'system'
     },
     props: {
         transpose: number 
@@ -30,19 +29,7 @@ const TransposeNodeDef = {
         out: {
             name: 'Out',
             messageTypes: ['noteon', 'noteoff']
-        },
-        // thru: {
-        //     name: 'Thru',
-        //     messageTypes: [
-        //         'polykeypressure',
-        //         'controlchange',
-        //         'programchange',
-        //         'monokeypressure',
-        //         'pitchbend',
-        //         'channelaftertouch',
-        //         'system'
-        //     ]
-        // }
+        }
     },
     props: {
         transpose: {
@@ -52,10 +39,9 @@ const TransposeNodeDef = {
     },
     node({ send, receive, prop }){
         receive((message, edge) => {
-            console.log(edge);
             let transpose = prop('transpose');
-            let transposed = clamp(message.message.data[1] + transpose, 0, 127);
-            let data = new Uint8Array([message.message.data[0], transposed, message.message.data[2]]);
+            let transposed = clamp(message.data[1] + transpose, 0, 127);
+            let data = new Uint8Array([message.data[0], transposed, message.data[2]]);
             send(new MidiplexMessage(data), 'out');
         });
     }
@@ -63,8 +49,8 @@ const TransposeNodeDef = {
 
 
 class TransposeNode extends MidiplexNodeInstance<TransposeNodeTypeDef> {
-    constructor(key: string, config: NodeConfig = {}){
-        super(key, TransposeNodeDef);
+    constructor(key: string, config: NodeConfig<TransposeNodeTypeDef> = {}){
+        super(key, TransposeNodeDef, config);
     }
 }
 

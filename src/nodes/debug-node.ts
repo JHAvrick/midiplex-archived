@@ -1,4 +1,4 @@
-import { MidiplexMessage } from "@/midiplex-mesasge";
+import { MidiplexMessage } from "@/midiplex-message";
 import { MidiplexNodeInstance } from "@/node-instance";
 import { AllMessageTypes } from "@/util";
 

@@ -1,27 +1,24 @@
 import { MidiplexMessage } from "@/midiplex-message";
 import { MidiplexNodeInstance } from "@/node-instance";
 
-type CCMapNodeTypeDef = {
+type NoteMapNodeTypeDef = {
     inputs: {
-        in: 'controlchange'
+        in: 'noteon' | 'noteoff'
     },
     outputs: {
-        out: 'controlchange'
+        out: 'noteon' | 'noteoff'
     },
     props: {
-        mapping: CCMap
+        mapping: NoteMap
     },
     state: {}
 }
 
-interface CCMap {
-    [key: number]: number[]
-}
 
-const CCMapNodeDef : MidiplexNodeDefinition<CCMapNodeTypeDef> = {
-    name: 'CC Map',
-    key: 'CC_MAP_NODE',
-    description: 'Map control change messages to other control change destinations.',
+const NoteMapNodeDef : MidiplexNodeDefinition<NoteMapNodeTypeDef> = {
+    name: 'Note Map',
+    key: 'NOTE_MAP_NODE',
+    description: 'Map noteon/noteoff messages to other notes.',
     inputs: {
         in: {
             name: 'In',
@@ -61,10 +58,10 @@ const CCMapNodeDef : MidiplexNodeDefinition<CCMapNodeTypeDef> = {
     }
 };
 
-class CCMapNode extends MidiplexNodeInstance<CCMapNodeTypeDef> {
-    constructor(key: string, config: NodeConfig<CCMapNodeTypeDef> = {}){
-        super(key, CCMapNodeDef, config);
+class NoteMapNode extends MidiplexNodeInstance<NoteMapNodeTypeDef> {
+    constructor(key: string, config: NodeConfig<NoteMapNodeTypeDef> = {}){
+        super(key, NoteMapNodeDef, config);
     }
 }
 
-export { CCMapNodeTypeDef, CCMapNodeDef, CCMapNode };
+export { NoteMapNodeTypeDef, NoteMapNodeDef, NoteMapNode };

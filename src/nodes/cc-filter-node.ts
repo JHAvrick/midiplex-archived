@@ -40,7 +40,7 @@ const CCFilterNodeDef : MidiplexNodeDefinition<CCFilterNodeTypeDef> = {
     node({ prop, send, receive }){
         receive((message) => {
             let filter = prop('filter');
-            if (!filter.includes(message.message.data[1])){
+            if (!filter.includes(message.data[1])){
                 send(message, 'out');
             }
         })

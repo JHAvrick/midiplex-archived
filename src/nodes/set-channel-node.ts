@@ -1,7 +1,7 @@
 import { MidiplexNodeInstance } from "@/node-instance";
 import { AllMessageTypes } from "@/util";
 
-type MessageTypeFilterNodeTypeDef = {
+type SetChannelNodeTypeDef = {
     inputs: {
         in: MidiMessageType
     },
@@ -10,15 +10,15 @@ type MessageTypeFilterNodeTypeDef = {
         //thru: 'polykeypressure' | 'controlchange' | 'programchange' | 'monokeypressure' | 'pitchbend' | 'channelaftertouch' | 'system'
     },
     props: {
-        messageTypes: MidiMessageType[]
+        channel: number
     },
     state: {}
 }
 
-const MessageTypeFilterNodeDef :  MidiplexNodeDefinition<MessageTypeFilterNodeTypeDef> = {
-    name: 'Message Type Filter',
-    key: 'MESSAGE_TYPE_FILTER_NODE',
-    description: '',
+const SetChannelNodeDef :  MidiplexNodeDefinition<SetChannelNodeTypeDef> = {
+    name: 'Set Channel',
+    key: 'SET_CHANNEL_NODE',
+    description: 'Set a specific channel for all messages passing through this node. Non-channel messages are passed through unmodified.',
     inputs: {
         in: {
             name: 'In',
@@ -32,25 +32,24 @@ const MessageTypeFilterNodeDef :  MidiplexNodeDefinition<MessageTypeFilterNodeTy
         }
     },
     props: {
-        messageTypes: {
-            name: 'Message Types',
+        channel: {
+            name: 'Channel',
             value: AllMessageTypes
         }
     },
     node({ send, receive, prop }){
         receive((message) => {
-            if (prop('messageTypes').includes(message.type)) {
-                send(message, 'out');
-            }
+            message.setChannel(prop('channel'));
+            send(message, 'out');
         });
     }
 };
 
 
-class MessageTypeFilterNode extends MidiplexNodeInstance<MessageTypeFilterNodeTypeDef> {
-    constructor(key: string, config: NodeConfig<MessageTypeFilterNodeTypeDef> = {}){
-        super(key, MessageTypeFilterNodeDef, config);
+class SetChannelNode extends MidiplexNodeInstance<SetChannelNodeTypeDef> {
+    constructor(key: string, config: NodeConfig<SetChannelNodeTypeDef> = {}){
+        super(key, SetChannelNodeDef, config);
     }
 }
 
-export { MessageTypeFilterNodeTypeDef, MessageTypeFilterNodeDef, MessageTypeFilterNode };
+export { SetChannelNodeTypeDef, SetChannelNodeDef, SetChannelNode };
