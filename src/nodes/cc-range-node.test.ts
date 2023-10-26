@@ -5,7 +5,7 @@ import { MidiplexMessage } from '../midiplex-message';
 import { Util } from '../util';
 
 let debug = new DebugNode('debug');
-let node = new CCRangeNode('cc-map-node', { 
+let node = new CCRangeNode('cc-range-node', { 
         props: {
             mapping: {
                 0: [64, 100],

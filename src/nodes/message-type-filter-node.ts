@@ -7,7 +7,6 @@ type MessageTypeFilterNodeTypeDef = {
     },
     outputs: {
         out: MidiMessageType,
-        //thru: 'polykeypressure' | 'controlchange' | 'programchange' | 'monokeypressure' | 'pitchbend' | 'channelaftertouch' | 'system'
     },
     props: {
         messageTypes: MidiMessageType[]

@@ -1,6 +1,6 @@
 import { MidiplexMessage } from "./midiplex-message";
 
-const AllMessageTypes = <const> [
+const AllMessageTypes : NonEmptyArray<MidiMessageType> = [
       // MIDI channel message events
       "noteoff",
       "noteon",

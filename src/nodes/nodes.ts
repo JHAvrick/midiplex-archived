@@ -1,7 +1,7 @@
 import { InputNode } from './input-node';
 import { OutputNode } from './output-node';
 import { DebugNode } from './debug-node';
-import { MessageTypeFilterNode } from './filter-node';
+import { MessageTypeFilterNode } from './message-type-filter-node';
 import { MessageTypeSplitNode } from './message-type-split-node';
 import { TransposeNode } from './transpose-node';
 import { CCRangeNode } from './cc-range-node';

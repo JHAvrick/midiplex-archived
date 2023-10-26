@@ -6,19 +6,17 @@ type MessageTypeSplitTypeDef = {
         in: MidiMessageType
     },
     outputs: {
-        'noteoff': 'noteoff',
-        'noteon': 'noteon',
-        'polykeypressure': 'polykeypressure',
-        'controlchange': 'controlchange',
-        'programchange': 'programchange',
-        'monokeypressure': 'monokeypressure',
-        'pitchbend': 'pitchbend',
-        'channelaftertouch': 'channelaftertouch',
-        'system': 'system'
+        [key in MidiMessageType]: MidiMessageType
     },
     props: {},
     state: {}
 }
+
+let outputs = <{ [key in keyof MessageTypeSplitTypeDef['outputs']]: { name: string, messageTypes: [MidiMessageType]  } }> 
+Object.fromEntries(AllMessageTypes.map((type) => [type, {
+    name: type,
+    messageTypes: [type]
+}]));
 
 const MessageTypeSplitDef :  MidiplexNodeDefinition<MessageTypeSplitTypeDef> = {
     name: 'Message Type Splitter',
@@ -31,42 +29,7 @@ const MessageTypeSplitDef :  MidiplexNodeDefinition<MessageTypeSplitTypeDef> = {
         }
     },
     outputs: {
-        'noteoff': {
-            name: 'Note Off',
-            messageTypes: ['noteoff']
-        },
-        'noteon': {
-            name: 'Note On',
-            messageTypes: ['noteon']
-        },
-        'polykeypressure': {
-            name: 'Poly Key Pressure',
-            messageTypes: ['polykeypressure']
-        },
-        'controlchange': {
-            name: 'Control Change',
-            messageTypes: ['controlchange']
-        },
-        'programchange': {
-            name: 'Program Change',
-            messageTypes: ['programchange']
-        },
-        'monokeypressure': {
-            name: 'Mono Key Pressure',
-            messageTypes: ['monokeypressure']
-        },
-        'pitchbend': {
-            name: 'Pitch Bend',
-            messageTypes: ['pitchbend']
-        },
-        'channelaftertouch': {
-            name: 'Channel Aftertouch',
-            messageTypes: ['channelaftertouch']
-        },
-        'system': {
-            name: 'System',
-            messageTypes: ['system']
-        }
+        ...outputs
     },
     node({ send, receive, prop }){
         receive((message) => {
@@ -77,8 +40,8 @@ const MessageTypeSplitDef :  MidiplexNodeDefinition<MessageTypeSplitTypeDef> = {
 
 
 class MessageTypeSplitNode extends MidiplexNodeInstance<MessageTypeSplitTypeDef> {
-    constructor(key: string, config: NodeConfig = {}){
-        super(key, MessageTypeSplitDef);
+    constructor(key: string, config: NodeConfig<MessageTypeSplitTypeDef> = {}){
+        super(key, MessageTypeSplitDef, config);
     }
 }
 
