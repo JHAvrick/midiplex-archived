@@ -55,12 +55,12 @@ declare global {
         test: (message: MidiplexMessage) => boolean
     } | {
         type: 'noteon' | 'noteoff',
-        note?: IntRange<0, 128>,
-        velocity?: IntRange<0, 128> | MidiplexTriggerMinMax
+        note?: number,
+        velocity?: number | MidiplexTriggerMinMax
     } | {
         type: 'controlchange',
-        cc?: IntRange<0, 128>,
-        value?: IntRange<0, 128> | MidiplexTriggerMinMax
+        cc?: number,
+        value?: number | MidiplexTriggerMinMax
     } /* | {
         type: 'polykeypressure',
         note?: IntRange<0, 128>,

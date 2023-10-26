@@ -84,6 +84,8 @@ const matchTrigger = (trigger: MidiplexTrigger, m: MidiplexMessage) => {
                 return trigger.cc === m.data[1] && trigger.value === m.data[2];
             } else if ('cc' in trigger) {
                 return trigger.cc === m.data[1];
+            } else if ('value' in trigger) {
+                return trigger.value === m.data[2];
             } else {
                 return true;
             }

@@ -11,6 +11,44 @@ describe('Util', () => {
         done();
     });
 
+    test('Util.Message.matchTrigger(): Match noteon', (done) => {
+        let m = Util.Message.create(new Uint8Array([0x90, 84, 64]), 5);
+        let trigger : MidiplexTrigger = { type: 'noteon' };
+        let matches = Util.Message.matchTrigger(trigger, m);
+        expect(matches).toBe(true);
+        done();
+    });
+
+    test('Util.Message.matchTrigger(): Match specific note with noteon', (done) => {
+        let match = Util.Message.create(new Uint8Array([0x90, 84, 64]), 5);
+        let fail = Util.Message.create(new Uint8Array([0x90, 85, 64]), 5);
+        let trigger : MidiplexTrigger = { type: 'noteon', note: 84 };
+
+        expect(Util.Message.matchTrigger(trigger, match)).toBe(true);
+        expect(Util.Message.matchTrigger(trigger, fail)).toBe(false);
+        done();
+    });
+
+    test('Util.Message.matchTrigger(): Fail to match noteon', (done) => {
+        let m = Util.Message.create(new Uint8Array([0x90, 84, 64]), 5);
+        let trigger : MidiplexTrigger = { type: 'controlchange' };
+        let matches = Util.Message.matchTrigger(trigger, m);
+        expect(matches).toBe(false);
+        done();
+    });
+
+    test('Util.Message.matchTrigger(): Match controlchange with specific value', (done) => {
+        let match = Util.Generate.controlchange(45, 44);
+        let fail = Util.Generate.controlchange(45, 45);
+        let trigger : MidiplexTrigger = { type: 'controlchange', value: 44 };
+        let triggerCC : MidiplexTrigger = { type: 'controlchange', cc: 25, value: 44 };
+
+        expect(Util.Message.matchTrigger(trigger, match)).toBe(true);
+        expect(Util.Message.matchTrigger(trigger, fail)).toBe(false);
+        expect(Util.Message.matchTrigger(triggerCC, match)).toBe(false);
+        done();
+    });
+
     test('Util.Generate.noteon()', (done) => {
         let m = Util.Generate.noteon('D5', 127, 12);
         expect(m.type).toBe('noteon'); 

@@ -49,7 +49,7 @@ const CCFilterNodeDef : MidiplexNodeDefinition<CCFilterNodeTypeDef> = {
 
 class CCFilterNode extends MidiplexNodeInstance<CCFilterNodeTypeDef> {
     constructor(key: string, config: NodeConfig<CCFilterNodeTypeDef> = {}){
-        super(key, CCFilterNodeDef);
+        super(key, CCFilterNodeDef, config);
     }
 }
 
