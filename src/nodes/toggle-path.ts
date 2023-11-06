@@ -1,5 +1,6 @@
 import { AllMessageTypes } from "@/util";
 import { MidiplexNodeInstance } from "@/node-instance";
+import { Util } from "@/util";
 
 type TogglePathTypeDef = {
     inputs: {
@@ -9,11 +10,8 @@ type TogglePathTypeDef = {
         out: MidiMessageType,
     },
     props: {
-        cc: IntRange<0, 128>,
-        openValue: IntRange<0, 128>,
-        closedValue: IntRange<0, 128>,
-        toggleOnAnyValue: boolean,
-        allowNoteOff: boolean,
+        triggerOpen: MidiplexTrigger | null,
+        triggerClosed: MidiplexTrigger | null,
         open: boolean
     },
     state: {}
@@ -36,46 +34,26 @@ const TogglePathDef :  MidiplexNodeDefinition<TogglePathTypeDef> = {
         }
     },
     props: {
-        cc: {
-            name: 'CC Trigger',
-            value: 0
-        },
         /**
          * The CC value which will cause the path to open. If this value is the same as the
          * `closedValue`, the path will toggle open and closed on the same value.
          */
-        openValue: {
+        triggerOpen: {
             name: 'Open Value',
-            value: 127
+            value: null
         },
         /**
          * The CC value which will cause the path to close.
          */
-        closedValue: {
+        triggerClosed: {
             name: 'Closed Value',
-            value: 0
+            value: null
         },
         /**
          * This property can be used to manually open or close the path.
          */
         open: {
             name: 'Open',
-            value: true
-        },
-        /**
-         * When `true` the openValue and closedValue will be ignored and the path will toggle open/closed
-         * on ANY value received on the given CC channel.
-         */
-        toggleOnAnyValue: {
-            name: 'Toggle On Any Value',
-            value: false
-        },
-        /**
-         * When `true`, allows `noteoff` commands to pass through regardless of whether the
-         * path is open or not. This prevents stuck notes when the path is closed.
-         */
-        allowNoteOff: {
-            name: 'Allow Note Off',
             value: true
         }
     },
@@ -87,25 +65,21 @@ const TogglePathDef :  MidiplexNodeDefinition<TogglePathTypeDef> = {
         });
 
         receive((message) => {
-            let data = message.data;
-            if (message.type === 'controlchange' && data[1] === prop('cc')) {
-                if (prop('toggleOnAnyValue')){
-                    isOpen = !isOpen;
-                } else if (prop('closedValue') === prop('openValue') && data[2] === prop('openValue')){
-                    isOpen = !isOpen;
-                    return;
-                } else if (data[2] === prop('closedValue')){
+            if (isOpen){
+                let triggerClosed = prop('triggerClosed');
+                if (triggerClosed && Util.Message.matchTrigger(triggerClosed, message)){
                     isOpen = false;
                     return;
-                } else if (data[2] === prop('openValue')){
+                }
+            } else {
+                let triggerOpen = prop('triggerOpen');
+                if (triggerOpen && Util.Message.matchTrigger(triggerOpen, message)){
                     isOpen = true;
                     return;
                 }
             }
 
-            if (isOpen || (prop('allowNoteOff') && message.type === 'noteoff')){
-                send(message, 'out');
-            }
+            if (isOpen) send(message, 'out');
         });
     }
 };

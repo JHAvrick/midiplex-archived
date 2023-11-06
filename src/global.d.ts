@@ -159,7 +159,7 @@ declare global {
         node?: (params: ({
             prop: <K extends keyof T['props']>(key: K) => T['props'][K],
             state: <K extends keyof T['state']>(key: K, newVal?: T['state'][K]) => T['state'][K],
-            send: <K extends keyof T['outputs']>(message: MidiplexMessage, edge: K) => void,
+            send: <K extends keyof T['outputs'] | 'thru'>(message: MidiplexMessage, edge: K) => void,
             receive: (handler: <K extends keyof T['inputs']>(message: MidiplexMessage, edge: K) => void) => void,
             update: (handler: () => void) => void
         })) => void,
